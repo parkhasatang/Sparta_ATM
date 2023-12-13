@@ -9,11 +9,13 @@ public class UiManager : MonoBehaviour
     public GameObject SelectBtn;
     public GameObject OpenWithDrawPanel;
     public GameObject OpenTransferPanel;
+    public GameObject ErrorPopUp;
     public Bank MyBank;
     public Player MyPlayer;
 
     public TMP_InputField BankToMoney;
     public TMP_InputField MoneyToBank;
+    public TMP_Text ErrorMsg;
     public void WithDraw()
     {
         SelectBtn.SetActive(false);
@@ -40,12 +42,12 @@ public class UiManager : MonoBehaviour
     }
 
     //단일책임 원칙
-    public void WithdrawMoney(int amount)
+    public void WithdrawMoney(int amount) // 출금 Step1
     {
         MyBank.WithdrawMoney(amount);// Bank.cs가 직접 값을 수정하라고 지시.
     }
 
-    public void TransferMoney(int amount)
+    public void TransferMoney(int amount) // 입금 Step1
     {
         MyPlayer.TranferMoney(amount); // 이번엔 Player.cs가 직접 값을 수정하라고 지시.
     }
@@ -65,15 +67,17 @@ public class UiManager : MonoBehaviour
             else
             {
                 BankToMoney.text = "";// 숫자가 아니거나 비어있으면 썼던 글씨 칸 비워주기.
-                // Todo 경고창 출력.
-                Debug.Log("숫자를 입력해주세요.");
+                // 경고창 출력.
+                ErrorMsg.text = $"Please, Enter the Number.";
+                ErrorPopUp.SetActive(true);
             }
         }
         else if (BankToMoney == null)
         {
             BankToMoney.text = "";// 숫자가 아니거나 비어있으면 썼던 글씨 칸 비워주기.
-            // Todo 경고창 출력.
-            Debug.Log("숫자를 입력해주세요.");
+            // 경고창 출력.
+            ErrorMsg.text = $"Please, Enter the Number.";
+            ErrorPopUp.SetActive(true);
         }
     }
 
@@ -86,20 +90,27 @@ public class UiManager : MonoBehaviour
             if (int.TryParse(MoneyToBank.text, out nowBank))
             {
                 MyPlayer.TranferMoney(nowBank);
-                Debug.Log("입금되었습니다.");
             }
             else
             {
                 MoneyToBank.text = "";// 숫자가 아니거나 비어있으면 썼던 글씨 칸 비워주기.
-                // Todo 경고창 출력.
-                Debug.Log("숫자를 입력해주세요.");
+                // 경고창 출력.
+                ErrorMsg.text = $"Please, Enter the Number.";
+                ErrorPopUp.SetActive(true);
             }
         }
         else if (MoneyToBank == null)
         {
             MoneyToBank.text = "";// 숫자가 아니거나 비어있으면 썼던 글씨 칸 비워주기.
-            // Todo 경고창 출력.
-            Debug.Log("숫자를 입력해주세요.");
+            // 경고창 출력.
+            ErrorMsg.text = $"Please, Enter the Number.";
+            ErrorPopUp.SetActive(true);
         }
+    }
+
+    // 뒤로가기 버튼
+    public void CloseErrorPopUp()
+    {
+        ErrorPopUp.SetActive(false);
     }
 }

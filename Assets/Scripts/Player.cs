@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public UiManager uiManager;
     public Bank MyBank;
     public TMP_Text PlayerName;
     public TMP_Text Money;
@@ -29,19 +30,25 @@ public class Player : MonoBehaviour
         Money.text = $"Money {CurrentMoney}";
     }
 
-    public void WithdrawMoney(int amount)
+    public void WithdrawMoney(int amount)// 출금 Step3
     {
         CurrentMoney += amount;
         UpdateCurrentMoney();
     }
 
-    public void TranferMoney(int amount)
+    public void TranferMoney(int amount) // 입금 Step2
     {
         if(CurrentMoney >= amount)
         {
             CurrentMoney -= amount;
             MyBank.TranferMoney(amount);
             UpdateCurrentMoney();
+        }
+        else if (CurrentMoney < amount)
+        {
+            uiManager.MoneyToBank.text = "";
+            uiManager.ErrorMsg.text = $"Not Enough Money";
+            uiManager.ErrorPopUp.SetActive(true);
         }
     }
 }
