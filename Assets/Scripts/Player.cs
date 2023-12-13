@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        PlayerName.text = "MinKyu";// 나중에 PlayerPref의 Get으로 회원가입에서 값가져오기
+        PlayerName.text = PlayerPrefs.GetString("PlayerName");
     }
 
     private void Start()
