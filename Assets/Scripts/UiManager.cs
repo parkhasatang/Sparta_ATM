@@ -62,7 +62,6 @@ public class UiManager : MonoBehaviour
             if(int.TryParse(BankToMoney.text,out nowMoney))
             {
                 MyBank.WithdrawMoney(nowMoney);
-                Debug.Log("출금되었습니다.");
             }
             else
             {
